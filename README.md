@@ -50,11 +50,11 @@ These ateps are detailed below:
    conda activate webin_cli_env
    java -version
    ```
-7. Download the latest version of webin-cli by checking the [latest release](https://github.com/enasequence/webin-cli/releases), right click on the latest release > 'Copy link address' and pase this into where the https::// link below is. (First navigate to the directory to which you want to download the webin application)
+7. Download the latest version of webin-cli by checking the [latest release](https://github.com/enasequence/webin-cli/releases). Right click on the latest release > 'Copy link address' and paste this into the place of the link below. Launch this `wget` command after navigating to the directory to which you want to download the webin application.
    ```
    wget https://github.com/enasequence/webin-cli/releases/download/9.0.3/webin-cli-9.0.3.jar
    ```
-9. Test the Webin-cli tool and see the options (replace the `~/webin-cli-9.0.3.jar` with the file path anf version of webin-cli you have downloaded).
+9. Test the Webin-cli tool with `-help` to see the options available. Replace the `~/webin-cli-9.0.3.jar` with the file path and version of webin-cli you have downloaded.
    ```
    java -jar ~/webin-cli-9.0.3.jar -help
    ```
@@ -67,10 +67,12 @@ Now that the Webin-cli tool is working, prepare the 2 essential inputs:
       for f in *.fastq; do pigz -c "$f" > "$f.gz"; done
       ```
       NOTE: `pigz` is just a faster version of `gzip`, so you can replace this with `gzip` if you can't get `pigz` to work.
-   2. **Manifest file**, which declares essential metadata for the read submission, including the filename, and links it to the Study and Sample already registered
+   2. **Manifest file**, which declares essential metadata for the read submission, including the filename, and links it to the **Study** and **Sample** already registered
      
-6. Make manifest files for each read set to submit using the `make_manifests_ont.sh` helper script. More info on the required format of manifest files can be found [here](https://ena-docs.readthedocs.io/en/latest/submit/reads/webin-cli.html).
+6. Make manifest files for each read set to submit using the `make_manifests_ont.sh` helper script. More info on the required format of manifest files can be found [here](https://ena-docs.readthedocs.io/en/latest/submit/reads/webin-cli.html). Download this GitHub repo, or just the `make_manifests_ont.sh` script, or copy its contents into a text editor of your choice. Navigate to the directory where you have saved the script, ensure the script is executable with `chmod` then execute the script. Replace `INPUT_DIR` with the path to where your `.fastq.gz` files are, and replace `OUTPUT_DIR` with the path to where you want to write the output files.
    ```
+   chmod +x make_manifests_ont.sh # ensure script executable
+   bash make_manifest_files_ont.sh -i INPUT_DIR -o OUTPUT_DIR
    ```
 - NOTE: the SAMPLE field must match either a sample_alias or sample accession uploaded in step 3, NAME (sequencing experiment name) must be unique to each uploaded file (or file pair if paired illumina), and FASTQ must match the file name of the .fastq.gz file being uploaded.
 
