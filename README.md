@@ -41,7 +41,7 @@ These ateps are detailed below:
 ### 4. Submit Reads (using webin-cli tool)
 - The rest of the submission process is done using command line with the [Webin-CLI submission tool](https://github.com/enasequence/webin-cli). This is a java application, and full installation instructions can be found [here](https://github.com/enasequence/webin-cli).
 - Below is a minimal example for installation using bash in a Linux system. Adapted to macOS/Windows as needed:
-1. Navigate to the same platform your reads are on (eg your laptom, BMRC, a VM) and create a conda environment with the latest version of Java installed
+1. Navigate to the same platform your reads are on (e.g.: your laptop, a HPC cluster, a VM) and create a conda environment with the latest version of Java installed
    ```
       conda create -n webin_cli_env -c conda-forge openjdk=21 -y
    ```
@@ -69,13 +69,30 @@ Now that the Webin-cli tool is working, prepare the 2 essential inputs:
       NOTE: `pigz` is just a faster version of `gzip`, so you can replace this with `gzip` if you can't get `pigz` to work.
    2. **Manifest file**, which declares essential metadata for the read submission, including the filename, and links it to the **Study** and **Sample** already registered
      
-6. Make manifest files for each read set to submit using the `make_manifests_ont.sh` helper script. More info on the required format of manifest files can be found [here](https://ena-docs.readthedocs.io/en/latest/submit/reads/webin-cli.html). Download this GitHub repo, or just the `make_manifests_ont.sh` script, or copy its contents into a text editor of your choice. Navigate to the directory where you have saved the script, ensure the script is executable with `chmod` then execute the script. Replace `INPUT_DIR` with the path to where your `.fastq.gz` files are, and replace `OUTPUT_DIR` with the path to where you want to write the output files.
+6. Make manifest files for each read set to submit using the `make_manifests_ont.sh` helper script. More info on the required format of manifest files can be found [here](https://ena-docs.readthedocs.io/en/latest/submit/reads/webin-cli.html). Download this GitHub repo, or just the `make_manifests_ont.sh` script, or copy its contents into a text editor of your choice. You will need to edit the script: as a minimum, you need to change your Study accession to the one you registered in step 2, and may need to change other metadata fields at the bottom of the script. Navigate to the directory where you have saved the script, ensure the script is executable with `chmod` then execute the script. Replace `INPUT_DIR` with the path to where your `.fastq.gz` files are, and replace `OUTPUT_DIR` with the path to where you want to write the output manifest files.
    ```
+   nano make_manifests_ont.sh # open script in text editor to modify Study accession and other metadata fields.
    chmod +x make_manifests_ont.sh # ensure script executable
    bash make_manifest_files_ont.sh -i INPUT_DIR -o OUTPUT_DIR
    ```
 - NOTE: the SAMPLE field must match either a sample_alias or sample accession uploaded in step 3, NAME (sequencing experiment name) must be unique to each uploaded file (or file pair if paired illumina), and FASTQ must match the file name of the .fastq.gz file being uploaded.
 
-  Once manifest files are prepared and read fastqs are compressed, and webin-cli is installed, you should be ready to launch the upload. You can do this as a single command for a single read (/read pair for paired Illumina), or use the `submit_ena_ont.sh` helper script to submit reads declared in all of the manifest files in a specified input directory.
+  Once manifest files are prepared and read fastqs are compressed, and webin-cli is installed, you should be ready to launch the upload. You can do this as a single command for a single read (/read pair for paired Illumina),
   ```
+  java --enable-native-access=ALL-UNNAMED \ # just a java option to supress warnings
+    -jar ~/webin-cli-9.0.3.jar \ # replace with path to your webin-cli download
+    -context reads \ # change to genome/transcriptome/sequences as needed
+    -userName Webin-XXXXX \ # replace with your own Webin login
+    -passwordFile ena.txt \ # replace with password file name
+    -centerName "University of Oxford" \ # replace with centre name
+    -manifest "$manifest" \ # path to single manifest file declaring metadata 
+    -outputDir "$run_output_dir" \ # path to output directory for submission report
+    -inputDir "$INPUT_FASTQ_DIR" \ # directory (NOT individual file) where reads to upload are. This directory MUST contain an exact match to the filename decalred in the FASTQ field in the supplied mnaifest file.
+    -submit  # or -validate or -test flag
   ```
+  or use the `submit_ena_ont.sh` helper script to submit reads declared in all of the manifest files in a specified `MANIFEST_DIR` (this should be the same as the `OUTPUT_DIR` for the previous `make_manifest_ont.sh`script). `INPUT_FASTQ_DIR` is the directory name of where your compressed `fastq.gz` files for upload are, `OUTPUT_DIR` is where the submission report will be written, and `PASSWORD_FILE` contains your Webin account password without quotes. It should be `ena.txt` if you saved it as in step 1. Get the helper script by downloading the file from this repo, or copy-pasting its contents into a text editor of your choice. 
+  ```
+  chmod +x submit_ena_ont.sh # ensure executable
+  bash ./submit_ena_ont.sh -m MANIFEST_DIR -i INPUT_FASTQ_DIR -o OUTPUT_DIR -p PASSWORD_FILE
+  ```
+  
