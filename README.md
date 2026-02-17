@@ -75,7 +75,7 @@ Now that the Webin-cli tool is working, prepare the 2 essential inputs:
    chmod +x make_manifests_ont.sh # ensure script executable
    bash make_manifest_files_ont.sh -i INPUT_DIR -o OUTPUT_DIR
    ```
-- - NOTE: the SAMPLE field must match either a sample_alias or sample accession uploaded in step 3, NAME (sequencing experiment name) must be unique to each uploaded file (or file pair if paired illumina), and FASTQ must match the file name of the .fastq.gz file being uploaded.
+- NOTE: the SAMPLE field must match either a sample_alias or sample accession uploaded in step 3, NAME (sequencing experiment name) must be unique to each uploaded file (or file pair if paired illumina), and FASTQ must match the file name of the .fastq.gz file being uploaded.
 
 7. Once manifest files are prepared, read fastqs compressed, and webin-cli is installed, you should be ready to launch the upload
 
@@ -92,7 +92,7 @@ Now that the Webin-cli tool is working, prepare the 2 essential inputs:
     -inputDir "$INPUT_FASTQ_DIR" \ # directory (NOT individual file) where reads to upload are. This directory MUST contain an exact match to the filename decalred in the FASTQ field in the supplied mnaifest file.
     -submit  # or -validate or -test flag
   ```
-  - Or use the `submit_ena_ont.sh` helper script to submit reads declared in all of the manifest files in a specified `MANIFEST_DIR` (this should be the same as the `OUTPUT_DIR` for the previous `make_manifest_ont.sh`script). `INPUT_FASTQ_DIR` is the directory name of where your compressed `fastq.gz` files for upload are, `OUTPUT_DIR` is where the submission report will be written, and `PASSWORD_FILE` contains your Webin account password without quotes. It should be `ena.txt` if you saved it as in step 1. Get the helper script by downloading the file from this repo, or copy-pasting its contents into a text editor of your choice. 
+- Or use the `submit_ena_ont.sh` helper script to submit reads declared in all of the manifest files in a specified `MANIFEST_DIR` (this should be the same as the `OUTPUT_DIR` for the previous `make_manifest_ont.sh`script). `INPUT_FASTQ_DIR` is the directory name of where your compressed `fastq.gz` files for upload are, `OUTPUT_DIR` is where the submission report will be written, and `PASSWORD_FILE` contains your Webin account password without quotes. It should be `ena.txt` if you saved it as in step 1. Get the helper script by downloading the file from this repo, or copy-pasting its contents into a text editor of your choice. 
   ```
   chmod +x submit_ena_ont.sh # ensure executable
   bash ./submit_ena_ont.sh -m MANIFEST_DIR -i INPUT_FASTQ_DIR -o OUTPUT_DIR -p PASSWORD_FILE
