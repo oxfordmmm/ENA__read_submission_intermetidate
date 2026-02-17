@@ -19,7 +19,7 @@ These ateps are detailed below:
 
 ### 1. Make a Webin account and login
 - Go to the [Webin Submission Portal](https://www.ebi.ac.uk/ena/submit/webin/login) login page and click 'Register' for an account.
-- Save your password in a text file called `ena.txt`, and save this on the same platform as your reads (e.g. locally on your laptop, BMRC, or a VM). It does not have to be in the same folder as your reads, just on a known path.
+- Save your password in a text file called `ena.txt`, and save this on the same platform as your reads (e.g. on your laptop, BMRC, or a VM). It does not have to be in the same folder as your reads, just on a known path.
 
 ### 2. Register Study (interactively on website)
 - Once logged-in to the Webin Submission portal webiste, click on the yellow ['Register Study' option](https://www.ebi.ac.uk/ena/submit/webin/study).
@@ -29,10 +29,13 @@ These ateps are detailed below:
 ### 3. Register Samples (interactively on website)
 - Return to the Webin Submission Portal home page, and click on the green ['Register Samples' option](https://www.ebi.ac.uk/ena/submit/webin/app-checklist/sample/true).
 - You need to upload a `.tsv` or `.tab` spreadsheet using the 'Upload filled spreadsheet with to register samples' option. The spreadsheet needs to be in the correct format with specific metadata fields and values. To make this spreadsheet you can either:
-  1. Click through the 'Download spreadsheet to register samples' tab options to select the correct spreadsheet template for your data, download the template, compelete it with your samples in Excel, save as .tsv or .tab and upload.
-  - - e.g. 'Pathogens checklists' > 'ENA prokaryotic pathogen minimal sample checklist' > unselect 'Recommended Fields' unless you want to include these, and check the descriptions of the 'Mandatory Fields' > 'Download TSV Template'
+  1. Click through the 'Download spreadsheet to register samples' tab options to select the correct spreadsheet template, download the template, fill in with your samples in Excel, save as .tsv or .tab and upload.
+   - e.g. 'Pathogens checklists' >
+   - 'ENA prokaryotic pathogen minimal sample checklist' >
+   - unselect 'Recommended Fields' unless you want to include these, and check the descriptions of the 'Mandatory Fields' >
+   - 'Download TSV Template'
   2. Alternatively, use the `prepare_ENA_samples_metadata.R` R helper script in this repo (download file and open in R studio or text editor of your choice) to load in your own data and convert to the correct format for submission. The helper script makes a metadata file appropriate for the 'ENA prokaryotic pathogen minimal sample checklist' upload, and you will have to modify column names, species names, taxonomic IDs, etc to fit your own data.
-    - Upload your metadata file using the 'Upload filled spreadsheet with to register samples' option.
+- Upload your metadata file using the 'Upload filled spreadsheet with to register samples' option.
 
 
 ### 4. Submit Reads (using webin-cli tool)
