@@ -60,15 +60,16 @@ These ateps are detailed below:
 
 Now that the Webin-cli tool is working, prepare the 2 essential inputs:
 
-5. **Reads folder** where the compressed fastq reads are.
+5. **Reads folder** - where the compressed fastq reads are.
       - NOTE: reads MUST be compressed with a .fastq.gz extension (or [other permitted file type](https://ena-docs.readthedocs.io/en/latest/submit/fileprep/reads.html)).
-      - you con compress all files in a directory with this command:
+      - you can compress all files in a directory with this command:
       ```
       for f in *.fastq; do pigz -c "$f" > "$f.gz"; done
       ```
       NOTE: `pigz` is just a faster version of `gzip`, so you can replace this with `gzip` if you can't get `pigz` to work.
-6. **Manifest file**, which declares essential metadata for the read submission, including the filename, and links it to the **Study** and **Sample** already registered
-  - Make manifest files for each read set to submit using the `make_manifests_ont.sh` helper script. More info on the required format of manifest files can be found [here](https://ena-docs.readthedocs.io/en/latest/submit/reads/webin-cli.html). Download this GitHub repo, or just the `make_manifests_ont.sh` script, or copy its contents into a text editor of your choice. You will need to edit the script: as a minimum, you need to change your Study accession to the one you registered in step 2, and may need to change other metadata fields at the bottom of the script. Navigate to the directory where you have saved the script, ensure the script is executable with `chmod` then execute the script. Replace `INPUT_DIR` with the path to where your `.fastq.gz` files are, and replace `OUTPUT_DIR` with the path to where you want to write the output manifest files.
+
+6. **Manifest file** - which declares essential metadata for the read submission, including the filename, and links it to the **Study** and **Sample** already registered
+  - Make manifest files for each read using the `make_manifests_ont.sh` helper script. More info on [manifest files here](https://ena-docs.readthedocs.io/en/latest/submit/reads/webin-cli.html). Download the `make_manifests_ont.sh` script, or copy its contents into a text editor. You will need to edit the script: as a minimum, you need to change your Study accession to the one you registered in step 2, and may need to change other metadata fields at the bottom. Navigate to the directory where you  saved the script, ensure the script is executable then execute the script. Replace `INPUT_DIR` with the path to your `.fastq.gz` files, and replace `OUTPUT_DIR` with the path you want to write the output manifest files to.
    ```
    nano make_manifests_ont.sh # open script in text editor to modify Study accession and other metadata fields.
    chmod +x make_manifests_ont.sh # ensure script executable
